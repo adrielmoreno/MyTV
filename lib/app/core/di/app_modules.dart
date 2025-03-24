@@ -1,9 +1,8 @@
 import 'package:get_it/get_it.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import '../../data/repositories_impl/auth_repository_impl.dart';
 import '../../data/repositories_impl/connectivity_repository_impl.dart';
-import '../../domain/repositories/auth_repository.dart';
-import '../../domain/repositories/connectivity_repository.dart';
 
 final inject = GetIt.instance;
 
@@ -14,11 +13,12 @@ class AppModules {
   }
 
   _setupAuthModule() {
-    inject.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
+    inject.registerLazySingleton(() => AuthRepositoryImpl());
   }
 
   _setupConnectivityModule() {
-    inject.registerLazySingleton<ConnectivityRepository>(
-        () => ConnectivityRepositoryImpl());
+    inject.registerLazySingleton(() => InternetConnection());
+    inject
+        .registerLazySingleton(() => ConnectivityRepositoryImpl(inject.get()));
   }
 }
