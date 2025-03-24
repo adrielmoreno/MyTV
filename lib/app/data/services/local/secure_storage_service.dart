@@ -19,7 +19,7 @@ class SecureStorageService {
     );
   }
 
-  static Future<String?> getToken() async {
+  Future<String?> getToken() async {
     return await _getString(_token);
   }
 
