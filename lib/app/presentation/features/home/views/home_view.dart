@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../../core/di/app_modules.dart';
+import '../../../../data/repositories_impl/auth_repository_impl.dart';
+import '../../splash/views/splash_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -6,10 +11,17 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Center(
-          child: Text('Home'),
+          child: MaterialButton(
+            color: Colors.red,
+            onPressed: () {
+              inject<AuthRepositoryImpl>().signOut();
+              context.pushReplacement(SplashView.route);
+            },
+            child: Text('Sign Out'),
+          ),
         ),
       ),
     );

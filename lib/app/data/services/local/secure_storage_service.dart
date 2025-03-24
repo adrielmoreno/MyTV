@@ -31,7 +31,7 @@ class SecureStorageService {
     return await storage.read(key: key);
   }
 
-  static Future<void> clear() async {
+  Future<void> clear() async {
     return await storage.deleteAll();
   }
 

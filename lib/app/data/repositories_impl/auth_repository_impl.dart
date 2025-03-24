@@ -52,9 +52,12 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result> signOut() {
-    // TODO: implement signOut
-    throw UnimplementedError();
+  Future<void> signOut() async {
+    try {
+      await _secureStorageService.clear();
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   @override
