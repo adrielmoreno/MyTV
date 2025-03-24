@@ -23,7 +23,7 @@ class SecureStorageService {
     return await _getString(_token);
   }
 
-  static Future<void> saveToken(String value) async {
+  Future<void> saveToken(String value) async {
     return await _saveString(_token, value);
   }
 

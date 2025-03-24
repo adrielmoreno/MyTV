@@ -15,6 +15,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      builder: (context, child) {
+        return GestureDetector(
+          onTap: () {
+            // Hide keyboard when tapping outside of a text field
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: child,
+        );
+      },
     );
   }
 }
