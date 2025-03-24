@@ -9,9 +9,9 @@ final inject = GetIt.instance;
 
 class AppModules {
   setup() {
-    _setupAuthModule();
-    _setupConnectivityModule();
     _setupCoreModule();
+    _setupConnectivityModule();
+    _setupAuthModule();
   }
 
   _setupCoreModule() {

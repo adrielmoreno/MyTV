@@ -12,7 +12,7 @@ class SecureStorageService {
 
   static late FlutterSecureStorage storage;
 
-  static Future<void> init() async {
+  Future<void> init() async {
     storage = FlutterSecureStorage(
       aOptions: _getAndroidOptions(),
       iOptions: _getIOSOPtions(),
