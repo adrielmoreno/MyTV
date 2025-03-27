@@ -26,7 +26,7 @@ class MoviesResponse {
         totalResults: totalResults ?? this.totalResults,
       );
 
-  factory MoviesResponse.fromJson(Map<dynamic, dynamic> json) => MoviesResponse(
+  factory MoviesResponse.fromJson(Map<String, dynamic> json) => MoviesResponse(
         page: json["page"],
         results: json["results"] == null
             ? []

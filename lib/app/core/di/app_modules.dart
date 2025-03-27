@@ -33,7 +33,7 @@ class AppModules {
 
   _setupAccountModule() {
     inject.registerLazySingleton<AccountRepository>(
-        () => AccountRepositoryImpl());
+        () => AccountRepositoryImpl(inject.get(), inject.get()));
   }
 
   _setupConnectivityModule() {

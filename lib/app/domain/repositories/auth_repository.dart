@@ -4,8 +4,7 @@ import '../models/user.dart';
 
 abstract class AuthRepository {
   Future<bool> get isSignedId;
-  Future<User?> getUserData();
-  Future<Result<SignInFailure, User>> signIn(
+  Future<Result<SignInFailure, User?>> signIn(
     String username,
     String password,
   );

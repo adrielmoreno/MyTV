@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/app_modules.dart';
+import '../../../../domain/repositories/account_repository.dart';
 import '../../../../domain/repositories/auth_repository.dart';
 import '../../../../domain/repositories/connectivity_repository.dart';
 import '../../home/views/home_view.dart';
@@ -25,10 +26,7 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> _checkConnectivity() async {
-    final connectivityRepository = inject<ConnectivityRepository>();
-    final authRepository = inject<AuthRepository>();
-
-    final hasInternet = await connectivityRepository.hasIntenert;
+    final hasInternet = await inject<ConnectivityRepository>().hasIntenert;
     log('Has internet: $hasInternet');
 
     if (!hasInternet) {
@@ -36,13 +34,13 @@ class _SplashViewState extends State<SplashView> {
       return;
     }
 
-    final isSignedIn = await authRepository.isSignedId;
+    final isSignedIn = await inject<AuthRepository>().isSignedId;
     if (!isSignedIn) {
       _navigateTo(SignInView.route);
       return;
     }
 
-    final user = await authRepository.getUserData();
+    final user = await inject<AccountRepository>().getUserData();
     if (user == null) {
       _navigateTo(SignInView.route);
       return;

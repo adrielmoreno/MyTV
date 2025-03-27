@@ -7,8 +7,8 @@ import '../../../../domain/models/user.dart';
 import '../../../../domain/repositories/auth_repository.dart';
 
 class SignInController extends ChangeNotifier {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final _usernameController = TextEditingController(text: "morenocreactivo");
+  final _passwordController = TextEditingController(text: "KsHD7\$.#amcxCt4");
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController get usernameController => _usernameController;
@@ -23,7 +23,7 @@ class SignInController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Result<SignInFailure, User>> signIn() async {
+  Future<Result<SignInFailure, User?>> signIn() async {
     setIsLoading(true);
 
     final result = await inject<AuthRepository>().signIn(

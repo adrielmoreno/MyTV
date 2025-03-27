@@ -7,6 +7,7 @@ import 'package:tmdb_api/tmdb_api.dart';
 import '../../../domain/common/result.dart';
 import '../../../domain/enums/signin_failure.dart';
 import '../../../domain/models/movies_response.dart';
+import '../../../domain/models/user.dart';
 import '../../../env/env.dart';
 
 class MovieDBService {
@@ -89,9 +90,19 @@ class MovieDBService {
     await _tmdb.v3.auth.deleteSession(sessionId);
   }
 
+  Future<User?> getAccountDetails(String sessionId) async {
+    try {
+      final respose = await _tmdb.v3.account.getDetails(sessionId);
+      return User.fromJson(respose as Map<String, dynamic>);
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
+  }
+
   Future<MoviesResponse> getPopularMovies() async {
     final response = await _tmdb.v3.movies.getPopular();
-    return MoviesResponse.fromJson(response);
+    return MoviesResponse.fromJson(response as Map<String, dynamic>);
   }
 
   Future<Map> getTrending({

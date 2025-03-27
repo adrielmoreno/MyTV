@@ -14,13 +14,6 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._secureStorageService, this._movieDBService);
 
   @override
-  Future<User?> getUserData() {
-    return Future.value(
-      User(),
-    );
-  }
-
-  @override
   Future<bool> get isSignedId async {
     try {
       final token = await _secureStorageService.getToken();
@@ -32,7 +25,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<SignInFailure, User>> signIn(
+  Future<Result<SignInFailure, User?>> signIn(
       String username, String password) async {
     try {
       final requestToken = await _movieDBService.createRequestToken();
@@ -53,7 +46,8 @@ class AuthRepositoryImpl implements AuthRepository {
             (failure) => Result.failure(failure),
             (sessionId) async {
               await _secureStorageService.saveToken(sessionId);
-              return Result.success(User());
+              final user = await _movieDBService.getAccountDetails(sessionId);
+              return Result.success(user);
             },
           );
         },
