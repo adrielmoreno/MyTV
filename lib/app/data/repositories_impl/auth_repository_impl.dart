@@ -1,15 +1,17 @@
 import 'dart:developer';
 
 import '../../domain/common/result.dart';
-import '../../domain/enums/enums.dart';
+import '../../domain/enums/signin_failure.dart';
 import '../../domain/models/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../services/local/secure_storage_service.dart';
+import '../services/remote/moviedb_service.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final SecureStorageService _secureStorageService;
+  final MovieDBService _movieDBService;
 
-  AuthRepositoryImpl(this._secureStorageService);
+  AuthRepositoryImpl(this._secureStorageService, this._movieDBService);
 
   @override
   Future<User?> getUserData() {
@@ -30,30 +32,42 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Result<SingInFailure, User>> signIn(
+  Future<Result<SignInFailure, User>> signIn(
       String username, String password) async {
     try {
-      await Future.delayed(const Duration(seconds: 2));
+      final requestToken = await _movieDBService.createRequestToken();
 
-      if (username != 'test') {
-        return Result.failure(SingInFailure.notFound);
-      }
+      if (requestToken == null) return Result.failure(SignInFailure.unknown);
 
-      if (password != '12345678') {
-        return Result.failure(SingInFailure.unauthorized);
-      }
+      final loginResult =
+          await _movieDBService.createSessionWithLogin(username, password);
 
-      await _secureStorageService.saveToken('lasjfllasdflñasfñasd');
-      return Result.success(User());
+      return loginResult.when(
+        (failure) => Result.failure(failure),
+        (newRequestToken) async {
+          final sessionResult = await _movieDBService.createSession(
+            newRequestToken,
+          );
+
+          return sessionResult.when(
+            (failure) => Result.failure(failure),
+            (sessionId) async {
+              await _secureStorageService.saveToken(sessionId);
+              return Result.success(User());
+            },
+          );
+        },
+      );
     } catch (e) {
-      log(e.toString());
-      return Result.failure(SingInFailure.unknown);
+      return Result.failure(SignInFailure.unknown);
     }
   }
 
   @override
   Future<void> signOut() async {
     try {
+      final token = await _secureStorageService.getToken();
+      await _movieDBService.singOut('$token');
       await _secureStorageService.clear();
     } catch (e) {
       log(e.toString());

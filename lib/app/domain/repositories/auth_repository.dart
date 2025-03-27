@@ -1,11 +1,11 @@
 import '../common/result.dart';
-import '../enums/enums.dart';
+import '../enums/signin_failure.dart';
 import '../models/user.dart';
 
 abstract class AuthRepository {
   Future<bool> get isSignedId;
   Future<User?> getUserData();
-  Future<Result<SingInFailure, User>> signIn(
+  Future<Result<SignInFailure, User>> signIn(
     String username,
     String password,
   );

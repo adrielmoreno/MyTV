@@ -1,7 +1,11 @@
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
+import '../../../domain/common/result.dart';
+import '../../../domain/enums/signin_failure.dart';
 import '../../../domain/models/movies_response.dart';
 import '../../../env/env.dart';
 
@@ -20,6 +24,69 @@ class MovieDBService {
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  Future<String?> createRequestToken() async {
+    try {
+      final response = await _tmdb.v3.auth.createRequestToken(
+        asMap: true,
+      );
+      return response['request_token'] as String;
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
+  Future<Result<SignInFailure, String>> createSessionWithLogin(
+      String username, String password) async {
+    try {
+      final response = await _tmdb.v3.auth.createSessionWithLogin(
+        username,
+        password,
+      );
+      // Success
+      return Result.success(response as String);
+    } on DioException catch (e) {
+      // Error
+      switch (e.response?.statusCode) {
+        case 401:
+          return Result.failure(SignInFailure.unauthorized);
+        case 404:
+          return Result.failure(SignInFailure.notFound);
+        default:
+          return Result.failure(SignInFailure.unknown);
+      }
+    } on SocketException {
+      return Result.failure(SignInFailure.network);
+    }
+  }
+
+  Future<Result<SignInFailure, String>> createSession(
+      String requesToken) async {
+    try {
+      final response = await _tmdb.v3.auth.createSession(
+        requesToken,
+      );
+      // Success
+      return Result.success(response as String);
+    } on DioException catch (e) {
+      // Error
+      switch (e.response?.statusCode) {
+        case 401:
+          return Result.failure(SignInFailure.unauthorized);
+        case 404:
+          return Result.failure(SignInFailure.notFound);
+        default:
+          return Result.failure(SignInFailure.unknown);
+      }
+    } on SocketException {
+      return Result.failure(SignInFailure.network);
+    }
+  }
+
+  Future<void> singOut(String sessionId) async {
+    await _tmdb.v3.auth.deleteSession(sessionId);
   }
 
   Future<MoviesResponse> getPopularMovies() async {

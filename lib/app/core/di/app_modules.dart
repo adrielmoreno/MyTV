@@ -22,7 +22,8 @@ class AppModules {
   }
 
   _setupAuthModule() {
-    inject.registerLazySingleton(() => AuthRepositoryImpl(inject.get()));
+    inject.registerLazySingleton(
+        () => AuthRepositoryImpl(inject.get(), inject.get()));
   }
 
   _setupConnectivityModule() {

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/di/app_modules.dart';
 import '../../../../data/repositories_impl/auth_repository_impl.dart';
 import '../../../../data/services/remote/moviedb_service.dart';
-import '../../splash/views/splash_view.dart';
+import '../../sign_in/views/sign_in_view.dart';
 import '../widgets/movie_card.dart';
 
 class HomeView extends StatelessWidget {
@@ -60,7 +60,7 @@ class HomeView extends StatelessWidget {
                   color: Colors.red,
                   onPressed: () {
                     inject<AuthRepositoryImpl>().signOut();
-                    context.pushReplacement(SplashView.route);
+                    context.pushReplacement(SignInView.route);
                   },
                   child: const Text('Sign Out'),
                 ),
