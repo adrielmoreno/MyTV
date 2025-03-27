@@ -1,10 +1,12 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
+import '../../data/repositories_impl/account_repository_impl.dart';
 import '../../data/repositories_impl/auth_repository_impl.dart';
 import '../../data/repositories_impl/connectivity_repository_impl.dart';
 import '../../data/services/local/secure_storage_service.dart';
 import '../../data/services/remote/moviedb_service.dart';
+import '../../domain/repositories/account_repository.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/repositories/connectivity_repository.dart';
 
@@ -15,6 +17,7 @@ class AppModules {
     _setupCoreModule();
     _setupConnectivityModule();
     _setupAuthModule();
+    _setupAccountModule();
   }
 
   _setupCoreModule() {
@@ -26,6 +29,11 @@ class AppModules {
   _setupAuthModule() {
     inject.registerLazySingleton<AuthRepository>(
         () => AuthRepositoryImpl(inject.get(), inject.get()));
+  }
+
+  _setupAccountModule() {
+    inject.registerLazySingleton<AccountRepository>(
+        () => AccountRepositoryImpl());
   }
 
   _setupConnectivityModule() {
