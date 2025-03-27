@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/di/app_modules.dart';
+import '../../../../domain/common/result.dart';
+import '../../../../domain/enums/signin_failure.dart';
+import '../../../../domain/models/user.dart';
+import '../../../../domain/repositories/auth_repository.dart';
+
 class SignInController extends ChangeNotifier {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -15,6 +21,17 @@ class SignInController extends ChangeNotifier {
   void setIsLoading(bool value) {
     _isLoading = value;
     notifyListeners();
+  }
+
+  Future<Result<SignInFailure, User>> signIn() async {
+    setIsLoading(true);
+
+    final result = await inject<AuthRepository>().signIn(
+      _usernameController.text,
+      _passwordController.text,
+    );
+
+    return result;
   }
 
   @override
