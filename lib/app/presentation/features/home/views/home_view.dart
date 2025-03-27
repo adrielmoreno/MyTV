@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/app_modules.dart';
-import '../../../../data/repositories_impl/auth_repository_impl.dart';
 import '../../../../data/services/remote/moviedb_service.dart';
+import '../../../../domain/repositories/auth_repository.dart';
 import '../../sign_in/views/sign_in_view.dart';
 import '../widgets/movie_card.dart';
 
@@ -59,7 +59,7 @@ class HomeView extends StatelessWidget {
                 MaterialButton(
                   color: Colors.red,
                   onPressed: () {
-                    inject<AuthRepositoryImpl>().signOut();
+                    inject<AuthRepository>().signOut();
                     context.pushReplacement(SignInView.route);
                   },
                   child: const Text('Sign Out'),

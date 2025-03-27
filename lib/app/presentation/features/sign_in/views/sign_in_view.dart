@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/app_modules.dart';
-import '../../../../data/repositories_impl/auth_repository_impl.dart';
+import '../../../../domain/repositories/auth_repository.dart';
 import '../../../common/extensions/widget_extensions.dart';
 import '../../home/views/home_view.dart';
 
@@ -96,7 +96,7 @@ class _SignInViewState extends State<SignInView> {
       _isLoading = true;
     });
 
-    final result = await inject<AuthRepositoryImpl>().signIn(
+    final result = await inject<AuthRepository>().signIn(
       _usernameController.text,
       _passwordController.text,
     );

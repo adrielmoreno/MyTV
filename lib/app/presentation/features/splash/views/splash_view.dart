@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/app_modules.dart';
-import '../../../../data/repositories_impl/auth_repository_impl.dart';
-import '../../../../data/repositories_impl/connectivity_repository_impl.dart';
+import '../../../../domain/repositories/auth_repository.dart';
+import '../../../../domain/repositories/connectivity_repository.dart';
 import '../../home/views/home_view.dart';
 import '../../sign_in/views/sign_in_view.dart';
 
@@ -25,8 +25,8 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> _checkConnectivity() async {
-    final connectivityRepository = inject<ConnectivityRepositoryImpl>();
-    final authRepository = inject<AuthRepositoryImpl>();
+    final connectivityRepository = inject<ConnectivityRepository>();
+    final authRepository = inject<AuthRepository>();
 
     final hasInternet = await connectivityRepository.hasIntenert;
     log('Has internet: $hasInternet');
