@@ -103,8 +103,4 @@ class Movie {
         "vote_average": voteAverage,
         "vote_count": voteCount,
       };
-
-  String getPosterUrl() {
-    return 'https://image.tmdb.org/t/p/w500/$posterPath';
-  }
 }

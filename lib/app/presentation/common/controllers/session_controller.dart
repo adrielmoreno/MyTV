@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 
 import '../../../core/di/app_modules.dart';
-import '../../../domain/models/user.dart';
+import '../../../domain/models/user/user.dart';
 import '../../../domain/repositories/auth_repository.dart';
 
 class SessionController extends ChangeNotifier {
@@ -14,6 +14,7 @@ class SessionController extends ChangeNotifier {
   void setUser(User? user) {
     _user = user;
     log('User set: ${user?.username}');
+    log('User set: ${user?.avatarPath}');
     notifyListeners();
   }
 

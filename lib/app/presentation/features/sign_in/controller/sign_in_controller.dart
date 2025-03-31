@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/di/app_modules.dart';
 import '../../../../domain/common/result.dart';
 import '../../../../domain/enums/signin_failure.dart';
-import '../../../../domain/models/user.dart';
+import '../../../../domain/models/user/user.dart';
 import '../../../../domain/repositories/auth_repository.dart';
 
 class SignInController extends ChangeNotifier {

@@ -1,6 +1,6 @@
 import '../common/result.dart';
 import '../enums/signin_failure.dart';
-import '../models/user.dart';
+import '../models/user/user.dart';
 
 abstract class AuthRepository {
   Future<bool> get isSignedId;

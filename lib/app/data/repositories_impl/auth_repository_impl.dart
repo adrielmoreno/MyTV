@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import '../../domain/common/result.dart';
 import '../../domain/enums/signin_failure.dart';
-import '../../domain/models/user.dart';
+import '../../domain/models/user/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../services/local/secure_storage_service.dart';
 import '../services/remote/moviedb_service.dart';

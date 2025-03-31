@@ -4,4 +4,10 @@
     "source.organizeImports": "always"
   },
   "java.configuration.updateBuildConfiguration": "interactive",
+  "command-runner.commands": {
+    "build_runner": "flutter pub run build_runner build",
+    "pub_get": "flutter pub get",
+    "clean": "flutter clean",
+    "pod_install": "cd ios && pod install",
+  }
 }

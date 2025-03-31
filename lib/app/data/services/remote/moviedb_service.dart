@@ -7,7 +7,7 @@ import 'package:tmdb_api/tmdb_api.dart';
 import '../../../domain/common/result.dart';
 import '../../../domain/enums/signin_failure.dart';
 import '../../../domain/models/movies_response.dart';
-import '../../../domain/models/user.dart';
+import '../../../domain/models/user/user.dart';
 import '../../../env/env.dart';
 
 class MovieDBService {

@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import '../../domain/models/user.dart';
+import '../../domain/models/user/user.dart';
 import '../../domain/repositories/account_repository.dart';
 import '../services/local/secure_storage_service.dart';
 import '../services/remote/moviedb_service.dart';
