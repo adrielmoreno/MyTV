@@ -18,7 +18,7 @@ class MovieCard extends StatelessWidget {
         children: [
           if (movie.posterPath != null)
             CachedNetworkImage(
-              imageUrl: '${UrlConstants.IMAGE_BASE_URL}${movie.posterPath!}',
+              imageUrl: '${UrlConstants.IMAGE_BASE_URL}${movie.posterPath}',
               width: 100,
               fit: BoxFit.cover,
               placeholder: (context, url) => const Center(

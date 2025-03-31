@@ -4,3 +4,6 @@ targets:
       json_serializable:
         generate_for:
           - lib/app/domain/models/**/*.dart
+      freezed:
+        generate_for:
+          - lib/app/domain/models/**/*
