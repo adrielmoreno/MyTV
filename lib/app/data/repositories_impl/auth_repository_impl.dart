@@ -46,7 +46,10 @@ class AuthRepositoryImpl implements AuthRepository {
             (failure) => Result.failure(failure),
             (sessionId) async {
               await _secureStorageService.saveToken(sessionId);
+
               final user = await _movieDBService.getAccountDetails(sessionId);
+              if (user == null) return Result.failure(SignInFailure.unknown);
+
               return Result.success(user);
             },
           );

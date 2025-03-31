@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/di/app_modules.dart';
+import '../../../common/controllers/session_controller.dart';
 import '../../../common/extensions/widget_extensions.dart';
 import '../../home/views/home_view.dart';
 import '../controller/sign_in_controller.dart';
@@ -32,6 +34,8 @@ class SubmitButton extends StatelessWidget {
 
     final result = await controller.signIn();
 
+    controller.setIsLoading(false);
+
     result.when(
       (failure) {
         context.showSnackBar(
@@ -39,7 +43,7 @@ class SubmitButton extends StatelessWidget {
         );
       },
       (user) {
-        controller.setIsLoading(false);
+        inject<SessionController>().setUser(user);
         context.pushReplacement(HomeView.route);
       },
     );

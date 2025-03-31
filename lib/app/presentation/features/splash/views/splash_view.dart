@@ -7,6 +7,7 @@ import '../../../../core/di/app_modules.dart';
 import '../../../../domain/repositories/account_repository.dart';
 import '../../../../domain/repositories/auth_repository.dart';
 import '../../../../domain/repositories/connectivity_repository.dart';
+import '../../../common/controllers/session_controller.dart';
 import '../../home/views/home_view.dart';
 import '../../sign_in/views/sign_in_view.dart';
 
@@ -35,18 +36,20 @@ class _SplashViewState extends State<SplashView> {
     }
 
     final isSignedIn = await inject<AuthRepository>().isSignedId;
+
     if (!isSignedIn) {
       _navigateTo(SignInView.route);
       return;
     }
 
     final user = await inject<AccountRepository>().getUserData();
-    if (user == null) {
-      _navigateTo(SignInView.route);
-      return;
-    }
 
-    _navigateTo(HomeView.route);
+    if (user != null) {
+      inject<SessionController>().setUser(user);
+      _navigateTo(HomeView.route);
+    } else {
+      _navigateTo(SignInView.route);
+    }
   }
 
   _navigateTo(String routeName) {

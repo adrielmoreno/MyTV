@@ -9,6 +9,7 @@ import '../../data/services/remote/moviedb_service.dart';
 import '../../domain/repositories/account_repository.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/repositories/connectivity_repository.dart';
+import '../../presentation/common/controllers/session_controller.dart';
 
 final inject = GetIt.instance;
 
@@ -34,6 +35,7 @@ class AppModules {
   _setupAccountModule() {
     inject.registerLazySingleton<AccountRepository>(
         () => AccountRepositoryImpl(inject.get(), inject.get()));
+    inject.registerLazySingleton(() => SessionController());
   }
 
   _setupConnectivityModule() {

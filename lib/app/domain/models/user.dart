@@ -1,4 +1,6 @@
-class User {
+import 'package:equatable/equatable.dart';
+
+class User extends Equatable {
   final Avatar? avatar;
   final int? id;
   final String? iso6391;
@@ -7,7 +9,7 @@ class User {
   final bool? includeAdult;
   final String? username;
 
-  User({
+  const User({
     this.avatar,
     this.id,
     this.iso6391,
@@ -55,6 +57,17 @@ class User {
         "include_adult": includeAdult,
         "username": username,
       };
+
+  @override
+  List<Object?> get props => [
+        avatar,
+        id,
+        iso6391,
+        iso31661,
+        name,
+        includeAdult,
+        username,
+      ];
 }
 
 class Avatar {

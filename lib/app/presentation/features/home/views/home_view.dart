@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/app_modules.dart';
 import '../../../../data/services/remote/moviedb_service.dart';
-import '../../../../domain/repositories/auth_repository.dart';
+import '../../../common/controllers/session_controller.dart';
 import '../../sign_in/views/sign_in_view.dart';
 import '../widgets/movie_card.dart';
 
@@ -13,6 +13,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sessionController = inject<SessionController>();
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -59,7 +60,7 @@ class HomeView extends StatelessWidget {
                 MaterialButton(
                   color: Colors.red,
                   onPressed: () {
-                    inject<AuthRepository>().signOut();
+                    sessionController.signOut();
                     context.pushReplacement(SignInView.route);
                   },
                   child: const Text('Sign Out'),
