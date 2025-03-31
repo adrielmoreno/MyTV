@@ -1,41 +1,42 @@
-import 'movie/movie.dart';
+import '../../typedefs.dart';
+import 'media.dart';
 
-class MoviesResponse {
+class MediaResponses {
   final int? page;
-  final List<Movie>? results;
+  final List<Media>? results;
   final int? totalPages;
   final int? totalResults;
 
-  MoviesResponse({
+  MediaResponses({
     this.page,
     this.results,
     this.totalPages,
     this.totalResults,
   });
 
-  MoviesResponse copyWith({
+  MediaResponses copyWith({
     int? page,
-    List<Movie>? results,
+    List<Media>? results,
     int? totalPages,
     int? totalResults,
   }) =>
-      MoviesResponse(
+      MediaResponses(
         page: page ?? this.page,
         results: results ?? this.results,
         totalPages: totalPages ?? this.totalPages,
         totalResults: totalResults ?? this.totalResults,
       );
 
-  factory MoviesResponse.fromJson(Map<String, dynamic> json) => MoviesResponse(
+  factory MediaResponses.fromJson(Json json) => MediaResponses(
         page: json["page"],
         results: json["results"] == null
             ? []
-            : List<Movie>.from(json["results"]!.map((x) => Movie.fromJson(x))),
+            : List<Media>.from(json["results"]!.map((x) => Media.fromJson(x))),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Json toJson() => {
         "page": page,
         "results": results == null
             ? []

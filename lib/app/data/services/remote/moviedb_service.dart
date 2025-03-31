@@ -6,8 +6,9 @@ import 'package:tmdb_api/tmdb_api.dart';
 
 import '../../../domain/common/result.dart';
 import '../../../domain/enums/signin_failure.dart';
-import '../../../domain/models/movies_response.dart';
+import '../../../domain/models/media/media_responses.dart';
 import '../../../domain/models/user/user.dart';
+import '../../../domain/typedefs.dart';
 import '../../../env/env.dart';
 
 class MovieDBService {
@@ -93,26 +94,40 @@ class MovieDBService {
   Future<User?> getAccountDetails(String sessionId) async {
     try {
       final respose = await _tmdb.v3.account.getDetails(sessionId);
-      return User.fromJson(respose as Map<String, dynamic>);
+      return User.fromJson(respose as Json);
     } catch (e) {
       log(e.toString());
     }
     return null;
   }
 
-  Future<MoviesResponse> getPopularMovies() async {
+  Future<MediaResponses> getPopularMovies() async {
     final response = await _tmdb.v3.movies.getPopular();
-    return MoviesResponse.fromJson(response as Map<String, dynamic>);
+    return MediaResponses.fromJson(response as Json);
   }
 
-  Future<Map> getTrending({
+  Future<Result<SignInFailure, MediaResponses>> getMoviesAndSeries({
     MediaType mediaType = MediaType.all,
     TimeWindow timeWindow = TimeWindow.day,
   }) async {
-    return await _tmdb.v3.trending.getTrending(
-      mediaType: mediaType,
-      timeWindow: timeWindow,
-    );
+    try {
+      final response = await _tmdb.v3.trending.getTrending(
+        mediaType: mediaType,
+      );
+      return Result.success(MediaResponses.fromJson(response as Json));
+    } on DioException catch (e) {
+      // Error
+      switch (e.response?.statusCode) {
+        case 401:
+          return Result.failure(SignInFailure.unauthorized);
+        case 404:
+          return Result.failure(SignInFailure.notFound);
+        default:
+          return Result.failure(SignInFailure.unknown);
+      }
+    } on SocketException {
+      return Result.failure(SignInFailure.network);
+    }
   }
 
   Future<Map> getMovieDetails(int movieId) async {

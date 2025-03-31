@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/di/app_modules.dart';
-import '../../../../data/services/remote/moviedb_service.dart';
+import '../../../../domain/repositories/trending_repository.dart';
 import '../../../common/controllers/session_controller.dart';
 import '../../sign_in/views/sign_in_view.dart';
 import '../widgets/movie_card.dart';
@@ -24,7 +24,7 @@ class HomeView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: FutureBuilder(
-                    future: inject<MovieDBService>().getPopularMovies(),
+                    future: inject<TrendingRepository>().getMoviesAndSeries(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
@@ -36,7 +36,7 @@ class HomeView extends StatelessWidget {
 
                       if (snapshot.hasData) {
                         final moviesResponse = snapshot.data!;
-                        final movies = moviesResponse.results ?? [];
+                        final movies = moviesResponse.success?.results ?? [];
 
                         if (movies.isEmpty) {
                           return const Text('No movies found');
@@ -47,7 +47,7 @@ class HomeView extends StatelessWidget {
                           shrinkWrap: true,
                           itemCount: movies.length,
                           itemBuilder: (context, index) {
-                            return MovieCard(movie: movies[index]);
+                            return MovieCard(media: movies[index]);
                           },
                         );
                       }
