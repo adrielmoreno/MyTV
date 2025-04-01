@@ -111,9 +111,8 @@ class MovieDBService {
     TimeWindow timeWindow = TimeWindow.day,
   }) async {
     try {
-      final response = await _tmdb.v3.trending.getTrending(
-        mediaType: mediaType,
-      );
+      final response = await _tmdb.v3.trending
+          .getTrending(mediaType: mediaType, timeWindow: TimeWindow.day);
       return Result.success(MediaResponses.fromJson(response as Json));
     } on DioException catch (e) {
       // Error

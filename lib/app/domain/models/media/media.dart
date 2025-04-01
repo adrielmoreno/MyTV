@@ -10,12 +10,12 @@ abstract class Media with _$Media {
   const factory Media({
     required int id,
     required String overview,
-    String? title,
-    String? name, // TV
+    @JsonKey(readValue: readTitleOrName) required String title,
     bool? adult,
     double? popularity,
     bool? video,
-    @JsonKey(name: 'original_title') required String? originalTitle,
+    @JsonKey(readValue: readOriginalTitleOrOriginalName)
+    required String originalTitle,
     @JsonKey(name: 'poster_path') required String posterPath,
     @JsonKey(name: 'backdrop_path') required String backdropPath,
     @JsonKey(name: 'vote_average') required double voteAverage,
@@ -27,4 +27,12 @@ abstract class Media with _$Media {
   }) = _Media;
 
   factory Media.fromJson(Json json) => _$MediaFromJson(json);
+}
+
+Object? readTitleOrName(Map map, String _) {
+  return map['title'] ?? map['name'];
+}
+
+Object? readOriginalTitleOrOriginalName(Map map, String _) {
+  return map['original_title'] ?? map['original_name'];
 }
