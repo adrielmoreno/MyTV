@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:tmdb_api/tmdb_api.dart';
 
 import '../../../../domain/models/media/media.dart';
 import '../../../common/utils/images.dart';
@@ -29,15 +30,33 @@ class TrendingTile extends StatelessWidget {
               ),
             ),
             Positioned(
-                right: 5,
-                top: 5,
-                child: Chip(
-                  padding: EdgeInsets.zero,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  label: Text(
-                    media.voteAverage.toStringAsFixed(1),
-                  ),
-                ))
+              right: 5,
+              top: 5,
+              child: Opacity(
+                opacity: 0.7,
+                child: Column(
+                  spacing: 4,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Chip(
+                      padding: EdgeInsets.zero,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      label: Text(
+                        media.voteAverage.toStringAsFixed(1),
+                      ),
+                    ),
+                    Chip(
+                      padding: EdgeInsets.zero,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      label: Icon(
+                        media.type == MediaType.movie ? Icons.movie : Icons.tv,
+                        size: 15,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

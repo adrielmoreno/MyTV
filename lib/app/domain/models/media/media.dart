@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tmdb_api/tmdb_api.dart';
 
 import '../../typedefs.dart';
 
@@ -19,7 +20,7 @@ abstract class Media with _$Media {
     @JsonKey(name: 'poster_path') required String posterPath,
     @JsonKey(name: 'backdrop_path') required String backdropPath,
     @JsonKey(name: 'vote_average') required double voteAverage,
-    @JsonKey(name: 'media_type') required String type,
+    @JsonKey(name: 'media_type') required MediaType type,
     @JsonKey(name: 'genre_ids') List<int>? genreIds,
     @JsonKey(name: 'original_language') String? originalLanguage,
     @JsonKey(name: 'release_date') DateTime? releaseDate,

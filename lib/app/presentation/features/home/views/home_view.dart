@@ -18,6 +18,7 @@ class HomeView extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
+              SizedBox(height: 10),
               TrendingList(),
             ],
           ),
