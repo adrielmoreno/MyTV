@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:tmdb_api/tmdb_api.dart';
+
 import '../../domain/common/result.dart';
 import '../../domain/enums/signin_failure.dart';
 import '../../domain/models/media/media_responses.dart';
@@ -11,9 +13,10 @@ class TrendingRepositoryImpl implements TrendingRepository {
 
   TrendingRepositoryImpl(this._movieDBService);
   @override
-  Future<Result<SignInFailure, MediaResponses>> getMoviesAndSeries() async {
+  Future<Result<SignInFailure, MediaResponses>> getMoviesAndSeries(
+      TimeWindow timeWindow) async {
     try {
-      return _movieDBService.getMoviesAndSeries();
+      return _movieDBService.getMoviesAndSeries(timeWindow: timeWindow);
     } catch (e) {
       log(e.toString());
       return Result.failure(SignInFailure.unknown);

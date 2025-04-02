@@ -18,17 +18,20 @@ class HomeView extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-              Expanded(child: TrendingList()),
-              MaterialButton(
-                color: Colors.red,
-                onPressed: () {
-                  sessionController.signOut();
-                  context.pushReplacement(SignInView.route);
-                },
-                child: const Text('Sign Out'),
-              ),
+              TrendingList(),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: MaterialButton(
+          color: Colors.red,
+          onPressed: () {
+            sessionController.signOut();
+            context.pushReplacement(SignInView.route);
+          },
+          child: const Text('Sign Out'),
         ),
       ),
     );
