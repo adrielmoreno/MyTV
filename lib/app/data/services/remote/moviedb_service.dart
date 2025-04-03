@@ -134,10 +134,9 @@ class MovieDBService {
 
   Future<Result<SignInFailure, PerformerResponses>> getPerformers() async {
     try {
-      final response = await _tmdb.v3.trending.getTrending(
-        mediaType: MediaType.person,
-      );
-      return Result.success(PerformerResponses.fromJson(response as Json));
+      final response = await _tmdb.v3.people.getPopular();
+      final list = PerformerResponses.fromJson(response as Json);
+      return Result.success(list);
     } on DioException catch (e) {
       // Error
       switch (e.response?.statusCode) {
@@ -155,6 +154,10 @@ class MovieDBService {
 
   Future<Map> getMovieDetails(int movieId) async {
     return await _tmdb.v3.movies.getDetails(movieId);
+  }
+
+  Future<Map> gePersonDetails(int personId) async {
+    return await _tmdb.v3.people.getDetails(personId);
   }
 
   Future<Map> searchMovies(String query) async {

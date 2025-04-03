@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/di/app_modules.dart';
 import '../../../common/controllers/session_controller.dart';
 import '../../sign_in/views/sign_in_view.dart';
-import '../widgets/trending_list.dart';
-import '../widgets/trending_performers.dart';
+import '../widgets/movies_and_series/trending_list.dart';
+import '../widgets/perfomers/trending_performers.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});

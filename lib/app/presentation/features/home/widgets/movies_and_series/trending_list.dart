@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
-import '../../../../core/di/app_modules.dart';
-import '../../../../domain/common/result.dart';
-import '../../../../domain/enums/signin_failure.dart';
-import '../../../../domain/models/media/media_responses.dart';
-import '../../../../domain/repositories/trending_repository.dart';
+import '../../../../../core/di/app_modules.dart';
+import '../../../../../domain/common/result.dart';
+import '../../../../../domain/enums/signin_failure.dart';
+import '../../../../../domain/models/media/media_responses.dart';
+import '../../../../../domain/repositories/trending_repository.dart';
 import 'trending_tile.dart';
 import 'trending_time_window.dart';
 
@@ -58,26 +58,28 @@ class _TrendingListState extends State<TrendingList> {
                     return const CircularProgressIndicator();
                   }
 
-                  return snapshot.data!.when(
-                      (failure) => Text('Error: ${snapshot.error}'), (success) {
-                    final movies = success.results ?? [];
+                  if (snapshot.hasData) {
+                    return snapshot.data!
+                        .when((failure) => Text('Error: ${snapshot.error}'),
+                            (success) {
+                      final movies = success.results ?? [];
 
-                    if (movies.isEmpty) {
-                      return const Text('No movies found');
-                    }
+                      return ListView.separated(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: movies.length,
+                        itemBuilder: (context, index) {
+                          return TrendingTile(
+                              media: movies[index], width: width);
+                        },
+                        separatorBuilder: (_, __) => SizedBox(width: 10),
+                      );
+                    });
+                  }
 
-                    return ListView.separated(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      physics: const BouncingScrollPhysics(),
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: movies.length,
-                      itemBuilder: (context, index) {
-                        return TrendingTile(media: movies[index], width: width);
-                      },
-                      separatorBuilder: (_, __) => SizedBox(width: 10),
-                    );
-                  });
+                  return const Text('No movies found');
                 },
               ),
             );

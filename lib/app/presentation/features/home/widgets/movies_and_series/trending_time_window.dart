@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
-import '../../../../core/extensions/core_string_extensions.dart';
+import '../../../../../core/extensions/core_string_extensions.dart';
 
 class TrendingTimeWindow extends StatelessWidget {
   const TrendingTimeWindow(
