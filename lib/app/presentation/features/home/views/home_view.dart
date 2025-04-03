@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,15 +18,26 @@ class HomeView extends StatelessWidget {
     final sessionController = inject<SessionController>();
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Column(
-            spacing: 10.0,
-            children: [
-              TrendingList(),
-              TrendingPerformers(),
-            ],
-          ),
-        ),
+        child: LayoutBuilder(builder: (_, constraints) {
+          return RefreshIndicator(
+            onRefresh: () async {
+              log('message');
+            },
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: SizedBox(
+                height: constraints.maxHeight,
+                child: Column(
+                  spacing: 10.0,
+                  children: [
+                    TrendingList(),
+                    TrendingPerformers(),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
