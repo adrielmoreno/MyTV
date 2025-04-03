@@ -18,7 +18,9 @@ class TrendingRepositoryImpl implements TrendingRepository {
   Future<Result<SignInFailure, MediaResponses>> getMoviesAndSeries(
       TimeWindow timeWindow) async {
     try {
-      return _movieDBService.getMoviesAndSeries(timeWindow: timeWindow);
+      final list =
+          await _movieDBService.getMoviesAndSeries(timeWindow: timeWindow);
+      return list;
     } catch (e) {
       log(e.toString());
       return Result.failure(SignInFailure.unknown);
@@ -28,7 +30,8 @@ class TrendingRepositoryImpl implements TrendingRepository {
   @override
   Future<Result<SignInFailure, PerformerResponses>> getPerformers() async {
     try {
-      return _movieDBService.getPerformers();
+      final list = await _movieDBService.getPerformers();
+      return list;
     } catch (e) {
       log(e.toString());
       return Result.failure(SignInFailure.unknown);

@@ -5,6 +5,7 @@ import '../../../../../domain/common/result.dart';
 import '../../../../../domain/enums/signin_failure.dart';
 import '../../../../../domain/models/performer/performer_responses.dart';
 import '../../../../../domain/repositories/trending_repository.dart';
+import '../../../../common/widgets/request_failed.dart';
 import 'performer_tile.dart';
 
 typedef EitherListPerformers = Result<SignInFailure, PerformerResponses>;
@@ -27,7 +28,12 @@ class _TrendingPerformersState extends State<TrendingPerformers> {
   void initState() {
     super.initState();
     _pageController = PageController(viewportFraction: 0.90);
+    _updateFuture();
+  }
+
+  void _updateFuture() {
     _futre = _repository.getPerformers();
+    setState(() {});
   }
 
   @override
@@ -44,12 +50,22 @@ class _TrendingPerformersState extends State<TrendingPerformers> {
         future: _futre,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return Center(child: const CircularProgressIndicator());
           }
 
-          if (snapshot.hasData) {
-            return snapshot.data!
-                .when((failure) => Text('Error: ${snapshot.error}'), (success) {
+          if (snapshot.hasError) {
+            return RequestFailed(
+              text: 'Error: ${snapshot.error}',
+              onRetry: _updateFuture,
+            );
+          }
+
+          return snapshot.data!.when(
+            (failure) => RequestFailed(
+              text: 'Error: ${failure.message}',
+              onRetry: _updateFuture,
+            ),
+            (success) {
               final performers = success.results ?? [];
 
               return Stack(
@@ -91,10 +107,8 @@ class _TrendingPerformersState extends State<TrendingPerformers> {
                   ),
                 ],
               );
-            });
-          }
-
-          return const Text('No Perfomers found');
+            },
+          );
         },
       ),
     );

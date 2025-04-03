@@ -6,6 +6,7 @@ import '../../../../../domain/common/result.dart';
 import '../../../../../domain/enums/signin_failure.dart';
 import '../../../../../domain/models/media/media_responses.dart';
 import '../../../../../domain/repositories/trending_repository.dart';
+import '../../../../common/widgets/request_failed.dart';
 import 'trending_tile.dart';
 import 'trending_time_window.dart';
 
@@ -28,7 +29,13 @@ class _TrendingListState extends State<TrendingList> {
   @override
   void initState() {
     super.initState();
+    _updateFuture(_timeWindow);
+  }
+
+  void _updateFuture(TimeWindow timeWindow) {
+    _timeWindow = timeWindow;
     _futre = _repository.getMoviesAndSeries(_timeWindow);
+    setState(() {});
   }
 
   @override
@@ -39,51 +46,59 @@ class _TrendingListState extends State<TrendingList> {
       children: [
         TrendingTimeWindow(
           timeWindow: _timeWindow,
-          onChanged: (timeWindow) {
-            _timeWindow = timeWindow;
-            _futre = _repository.getMoviesAndSeries(_timeWindow);
-            setState(() {});
-          },
+          onChanged: _updateFuture,
         ),
         AspectRatio(
           aspectRatio: 16 / 8,
-          child: LayoutBuilder(builder: (_, constraint) {
-            final width = constraint.maxHeight * 0.65;
-            return Center(
-              child: FutureBuilder<EitherListMedia>(
-                key: ValueKey(_futre),
-                future: _futre,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
+          child: LayoutBuilder(
+            builder: (_, constraint) {
+              final width = constraint.maxHeight * 0.65;
+              return Center(
+                child: FutureBuilder<EitherListMedia>(
+                    key: ValueKey(_futre),
+                    future: _futre,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
 
-                  if (snapshot.hasData) {
-                    return snapshot.data!
-                        .when((failure) => Text('Error: ${snapshot.error}'),
-                            (success) {
-                      final movies = success.results ?? [];
+                      if (snapshot.hasError) {
+                        return RequestFailed(
+                          text: 'Error: ${snapshot.error}',
+                          onRetry: () {
+                            _updateFuture(_timeWindow);
+                          },
+                        );
+                      }
 
-                      return ListView.separated(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: movies.length,
-                        itemBuilder: (context, index) {
-                          return TrendingTile(
-                              media: movies[index], width: width);
+                      return snapshot.data!.when(
+                        (failure) => RequestFailed(
+                          text: 'Error: ${failure.message}',
+                          onRetry: () {
+                            _updateFuture(_timeWindow);
+                          },
+                        ),
+                        (success) {
+                          final movies = success.results ?? [];
+
+                          return ListView.separated(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: movies.length,
+                            itemBuilder: (context, index) {
+                              return TrendingTile(
+                                  media: movies[index], width: width);
+                            },
+                            separatorBuilder: (_, __) => SizedBox(width: 10),
+                          );
                         },
-                        separatorBuilder: (_, __) => SizedBox(width: 10),
                       );
-                    });
-                  }
-
-                  return const Text('No movies found');
-                },
-              ),
-            );
-          }),
+                    }),
+              );
+            },
+          ),
         ),
       ],
     );
