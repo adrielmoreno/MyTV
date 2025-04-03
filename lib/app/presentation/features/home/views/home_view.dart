@@ -5,6 +5,7 @@ import '../../../../core/di/app_modules.dart';
 import '../../../common/controllers/session_controller.dart';
 import '../../sign_in/views/sign_in_view.dart';
 import '../widgets/trending_list.dart';
+import '../widgets/trending_performers.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -17,9 +18,10 @@ class HomeView extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: Column(
+            spacing: 10.0,
             children: [
-              SizedBox(height: 10),
               TrendingList(),
+              TrendingPerformers(),
             ],
           ),
         ),

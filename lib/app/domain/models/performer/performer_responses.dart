@@ -1,37 +1,37 @@
 import '../../typedefs.dart';
-import 'media.dart';
+import 'performer.dart';
 
-class MediaResponses {
+class PerformerResponses {
   final int? page;
-  final List<Media>? results;
+  final List<Performer>? results;
   final int? totalPages;
   final int? totalResults;
 
-  MediaResponses({
+  PerformerResponses({
     this.page,
     this.results,
     this.totalPages,
     this.totalResults,
   });
 
-  MediaResponses copyWith({
+  PerformerResponses copyWith({
     int? page,
-    List<Media>? results,
+    List<Performer>? results,
     int? totalPages,
     int? totalResults,
   }) =>
-      MediaResponses(
+      PerformerResponses(
         page: page ?? this.page,
         results: results ?? this.results,
         totalPages: totalPages ?? this.totalPages,
         totalResults: totalResults ?? this.totalResults,
       );
 
-  factory MediaResponses.fromJson(Json json) => MediaResponses(
+  factory PerformerResponses.fromJson(Json json) => PerformerResponses(
         page: json["page"],
         results: json["results"] == null
             ? []
-            : getMediaList(List<Json>.from(json["results"]!)),
+            : getPerformerList(List<Json>.from(json["results"]!)),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
       );

@@ -37,3 +37,17 @@ Object? readTitleOrName(Map map, String _) {
 Object? readOriginalTitleOrOriginalName(Map map, String _) {
   return map['original_title'] ?? map['original_name'];
 }
+
+List<Media> getMediaList(List<Json> list) {
+  return list
+      .where(
+        (e) =>
+            e['media_type'] != 'person' &&
+            e['poster_path'] != null &&
+            e['backdrop_path'] != null,
+      )
+      .map(
+        (x) => Media.fromJson(x),
+      )
+      .toList();
+}

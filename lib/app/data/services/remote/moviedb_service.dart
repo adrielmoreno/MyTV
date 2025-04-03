@@ -7,6 +7,7 @@ import 'package:tmdb_api/tmdb_api.dart';
 import '../../../domain/common/result.dart';
 import '../../../domain/enums/signin_failure.dart';
 import '../../../domain/models/media/media_responses.dart';
+import '../../../domain/models/performer/performer_responses.dart';
 import '../../../domain/models/user/user.dart';
 import '../../../domain/typedefs.dart';
 import '../../../env/env.dart';
@@ -116,6 +117,27 @@ class MovieDBService {
         timeWindow: timeWindow,
       );
       return Result.success(MediaResponses.fromJson(response as Json));
+    } on DioException catch (e) {
+      // Error
+      switch (e.response?.statusCode) {
+        case 401:
+          return Result.failure(SignInFailure.unauthorized);
+        case 404:
+          return Result.failure(SignInFailure.notFound);
+        default:
+          return Result.failure(SignInFailure.unknown);
+      }
+    } on SocketException {
+      return Result.failure(SignInFailure.network);
+    }
+  }
+
+  Future<Result<SignInFailure, PerformerResponses>> getPerformers() async {
+    try {
+      final response = await _tmdb.v3.trending.getTrending(
+        mediaType: MediaType.person,
+      );
+      return Result.success(PerformerResponses.fromJson(response as Json));
     } on DioException catch (e) {
       // Error
       switch (e.response?.statusCode) {
