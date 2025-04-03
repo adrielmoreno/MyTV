@@ -51,3 +51,4 @@ env.g.dart
 # Codegen
 *.g.dart
 *.freezed.dart
+lib/app/generated/
